@@ -1,0 +1,3 @@
+[submodule "ansible-junos-stdlib"]
+	path = ansible-junos-stdlib
+	url = https://github.com/Juniper/ansible-junos-stdlib.git
