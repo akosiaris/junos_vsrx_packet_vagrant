@@ -1,0 +1,14 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+  tasks:
+  - name: Checking NETCONF connectivity
+    wait_for: host={{ ansible_ssh_host }} port={{ ansible_ssh_port }} timeout=5
+  - name: enable RIP
+    junos_install_config:
+      host: "{{ ansible_ssh_host }}"
+      port: "{{ ansible_ssh_port }}"
+      user: root
+      file: rip.conf
+      ssh_private_key_file: "{{ ansible_ssh_private_key_file }}"

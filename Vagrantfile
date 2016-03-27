@@ -35,11 +35,8 @@ Vagrant.configure(2) do |config|
     vsrx03.vm.network "private_network", ip: "192.168.23.13", virtualbox__intnet: "02-to-03"
   end
 
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   sudo apt-get update
-  #   sudo apt-get install -y apache2
-  # SHELL
+  config.vm.provision "ansible" do |ansible|
+      ansible.verbose = "v"
+      ansible.playbook = "rip.yaml"
+  end
 end
