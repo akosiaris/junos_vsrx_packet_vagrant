@@ -1,0 +1,32 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+  tasks:
+  - name: Checking NETCONF connectivity
+    wait_for: host={{ ansible_ssh_host }} port={{ ansible_ssh_port }} timeout=5
+  - name: enable LLDP
+    junos_install_config:
+      host: "{{ ansible_ssh_host }}"
+      port: "{{ ansible_ssh_port }}"
+      user: root
+      file: lldp/lldp-enable.conf
+      ssh_private_key_file: "{{ ansible_ssh_private_key_file }}"
+  - name: get LLDP neighbours
+    junos_rpc:
+      host: "{{ ansible_ssh_host }}"
+      port: "{{ ansible_ssh_port }}"
+      user: root
+      ssh_private_key_file: "{{ ansible_ssh_private_key_file }}"
+      rpc: get-lldp-neighbors-information
+      format: xml
+      dest: "lldp/{{ inventory_hostname }}.xml"
+  - name: generate interface descriptions
+    raw: "./lldp/gen_descr.py lldp/{{ inventory_hostname }}.xml lldp/{{ inventory_hostname }}.conf"
+  - name: set interface descriptions
+    junos_install_config:
+      host: "{{ ansible_ssh_host }}"
+      port: "{{ ansible_ssh_port }}"
+      user: root
+      file: lldp/{{ inventory_hostname }}.conf
+      ssh_private_key_file: "{{ ansible_ssh_private_key_file }}"
