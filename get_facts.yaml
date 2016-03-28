@@ -1,0 +1,15 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+  tasks:
+  - name: Checking NETCONF connectivity
+    wait_for: host={{ ansible_ssh_host }} port={{ ansible_ssh_port }} timeout=5
+  - name: gather facts
+    junos_get_facts:
+      host: "{{ ansible_ssh_host }}"
+      port: "{{ ansible_ssh_port }}"
+      user: root
+      ssh_private_key_file: "{{ ansible_ssh_private_key_file }}"
+      savedir: facts
+    register: junos
