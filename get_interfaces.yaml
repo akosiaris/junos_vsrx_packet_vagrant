@@ -9,7 +9,7 @@
     junos_get_config:
       host: "{{ ansible_ssh_host }}"
       port: "{{ ansible_ssh_port }}"
-      dest: "configs/{{ inventory_hostname }}-interfaces.xml"
+      dest: "configs/{{ inventory_hostname }}-interfaces.text"
       user: root
       ssh_private_key_file: "{{ ansible_ssh_private_key_file }}"
       format: text
