@@ -21,9 +21,10 @@ def main():
                 'remotesys': remotesys,
         })
     with open(sys.argv[2], 'w') as f:
-        f.write('interfaces {')
-        f.write(''.join(confs))
-        f.write('}\n')
+        if len(confs) > 0:
+            f.write('interfaces {')
+            f.write(''.join(confs))
+            f.write('}\n')
 
 
 if __name__ == '__main__':
