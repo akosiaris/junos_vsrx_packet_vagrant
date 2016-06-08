@@ -1,0 +1,17 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+  tasks:
+  - name: Checking NETCONF connectivity
+    wait_for: host={{ ansible_ssh_host }} port={{ ansible_ssh_port }} timeout=5
+  - name: interfaces getting
+    junos_get_config:
+      host: "{{ ansible_ssh_host }}"
+      port: "{{ ansible_ssh_port }}"
+      dest: "configs/{{ inventory_hostname }}-protocols.xml"
+      user: root
+      ssh_private_key_file: "{{ ansible_ssh_private_key_file }}"
+      format: xml
+      filter: protocols
+      options: {inherit: inherit, groups: groups}
